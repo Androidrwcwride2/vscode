@@ -37,7 +37,7 @@ suite('ConfigurationService.test.ts', () => {
 
 	test('simple', () => runWithFakedTimers<void>({ useFakeTimers: true }, async () => {
 		await fileService.writeFile(settingsResource, VSBuffer.fromString('{ "foo": "bar" }'));
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 		const config = testObject.getValue<{
 			foo: string;
@@ -50,7 +50,7 @@ suite('ConfigurationService.test.ts', () => {
 	test('config gets flattened', () => runWithFakedTimers<void>({ useFakeTimers: true }, async () => {
 		await fileService.writeFile(settingsResource, VSBuffer.fromString('{ "testworkbench.editor.tabs": true }'));
 
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 		const config = testObject.getValue<{
 			testworkbench: {
@@ -69,7 +69,7 @@ suite('ConfigurationService.test.ts', () => {
 	test('error case does not explode', () => runWithFakedTimers<void>({ useFakeTimers: true }, async () => {
 		await fileService.writeFile(settingsResource, VSBuffer.fromString(',,,,'));
 
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 		const config = testObject.getValue<{
 			foo: string;
@@ -79,7 +79,7 @@ suite('ConfigurationService.test.ts', () => {
 	}));
 
 	test('missing file does not explode', () => runWithFakedTimers<void>({ useFakeTimers: true }, async () => {
-		const testObject = disposables.add(new ConfigurationService(URI.file('__testFile'), fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(URI.file('__testFile'), fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		const config = testObject.getValue<{ foo: string }>();
@@ -88,7 +88,7 @@ suite('ConfigurationService.test.ts', () => {
 	}));
 
 	test('trigger configuration change event when file does not exist', () => runWithFakedTimers<void>({ useFakeTimers: true }, async () => {
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 		return new Promise<void>((c, e) => {
 			disposables.add(Event.filter(testObject.onDidChangeConfiguration, e => e.source === ConfigurationTarget.USER)(() => {
@@ -101,7 +101,7 @@ suite('ConfigurationService.test.ts', () => {
 	}));
 
 	test('trigger configuration change event when file exists', () => runWithFakedTimers<void>({ useFakeTimers: true }, async () => {
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await fileService.writeFile(settingsResource, VSBuffer.fromString('{ "foo": "bar" }'));
 		await testObject.initialize();
 
@@ -117,7 +117,7 @@ suite('ConfigurationService.test.ts', () => {
 	test('reloadConfiguration', () => runWithFakedTimers<void>({ useFakeTimers: true }, async () => {
 		await fileService.writeFile(settingsResource, VSBuffer.fromString('{ "foo": "bar" }'));
 
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 		let config = testObject.getValue<{
 			foo: string;
@@ -156,7 +156,7 @@ suite('ConfigurationService.test.ts', () => {
 			}
 		});
 
-		let testObject = disposables.add(new ConfigurationService(URI.file('__testFile'), fileService, new NullPolicyService(), new NullLogService()));
+		let testObject = disposables.add(new ConfigurationService(URI.file('__testFile'), fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 		let setting = testObject.getValue<ITestSetting>();
 
@@ -164,7 +164,7 @@ suite('ConfigurationService.test.ts', () => {
 		assert.strictEqual(setting.configuration.service.testSetting, 'isSet');
 
 		await fileService.writeFile(settingsResource, VSBuffer.fromString('{ "testworkbench.editor.tabs": true }'));
-		testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		setting = testObject.getValue<ITestSetting>();
@@ -193,7 +193,7 @@ suite('ConfigurationService.test.ts', () => {
 			}
 		});
 
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		let res = testObject.inspect('something.missing');
@@ -231,7 +231,7 @@ suite('ConfigurationService.test.ts', () => {
 			}
 		});
 
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		let res = testObject.inspect('lookup.service.testNullSetting');
@@ -261,7 +261,7 @@ suite('ConfigurationService.test.ts', () => {
 				}
 			}
 		});
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		await testObject.updateValue('configurationService.testSetting', 'value');
@@ -280,7 +280,7 @@ suite('ConfigurationService.test.ts', () => {
 				}
 			}
 		});
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		await testObject.updateValue('configurationService.testSetting', 'value');
@@ -300,7 +300,7 @@ suite('ConfigurationService.test.ts', () => {
 				}
 			}
 		});
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		await testObject.updateValue('configurationService.testSetting', 'value');
@@ -322,7 +322,7 @@ suite('ConfigurationService.test.ts', () => {
 				}
 			}
 		});
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		await testObject.updateValue('configurationService.testSetting', 'value');
@@ -333,7 +333,7 @@ suite('ConfigurationService.test.ts', () => {
 	});
 
 	test('update unknown configuration', async () => {
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		await testObject.updateValue('configurationService.unknownSetting', 'value');
@@ -352,7 +352,7 @@ suite('ConfigurationService.test.ts', () => {
 				}
 			}
 		});
-		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, new NullPolicyService(), new NullLogService()));
+		const testObject = disposables.add(new ConfigurationService(settingsResource, fileService, disposables.add(new NullPolicyService()), new NullLogService()));
 		await testObject.initialize();
 
 		try {

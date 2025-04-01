@@ -173,7 +173,7 @@ class CliMain extends Disposable {
 		} else if (environmentService.policyFile) {
 			policyService = this._register(new FilePolicyService(environmentService.policyFile, fileService, logService));
 		} else {
-			policyService = new NullPolicyService();
+			policyService = this._register(new NullPolicyService());
 		}
 		services.set(IPolicyService, policyService);
 

@@ -81,7 +81,7 @@ export interface IPolicyConfiguration {
 	initialize(): Promise<ConfigurationModel>;
 }
 
-export class NullPolicyConfiguration implements IPolicyConfiguration {
+export class NullPolicyConfiguration extends Disposable implements IPolicyConfiguration {
 	readonly onDidChangeConfiguration = Event.None;
 	readonly configurationModel = ConfigurationModel.createEmptyModel(new NullLogService());
 	async initialize() { return this.configurationModel; }

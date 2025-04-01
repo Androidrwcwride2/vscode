@@ -131,7 +131,8 @@ export async function setupServerServices(connectionToken: ServerConnectionToken
 	services.set(IUriIdentityService, uriIdentityService);
 
 	// Configuration
-	const configurationService = new ConfigurationService(environmentService.machineSettingsResource, fileService, new NullPolicyService(), logService);
+	const policyService = disposables.add(new NullPolicyService());
+	const configurationService = new ConfigurationService(environmentService.machineSettingsResource, fileService, policyService, logService);
 	services.set(IConfigurationService, configurationService);
 
 	// User Data Profiles

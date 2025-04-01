@@ -29,7 +29,7 @@ suite('FilePromptContentsProvider', function () {
 
 	let instantiationService: TestInstantiationService;
 	setup(async () => {
-		const nullPolicyService = new NullPolicyService();
+		const nullPolicyService = testDisposables.add(new NullPolicyService());
 		const nullLogService = testDisposables.add(new NullLogService());
 		const nullFileService = testDisposables.add(new FileService(nullLogService));
 		const nullConfigService = testDisposables.add(new ConfigurationService(

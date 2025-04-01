@@ -47,7 +47,7 @@ export class ConfigurationService extends Disposable implements IConfigurationSe
 	) {
 		super();
 		this.defaultConfiguration = this._register(new DefaultConfiguration(logService));
-		this.policyConfiguration = policyService instanceof NullPolicyService ? new NullPolicyConfiguration() : this._register(new PolicyConfiguration(this.defaultConfiguration, policyService, logService));
+		this.policyConfiguration = policyService instanceof NullPolicyService ? this._register(new NullPolicyConfiguration()) : this._register(new PolicyConfiguration(this.defaultConfiguration, policyService, logService));
 		this.userConfiguration = this._register(new UserSettings(this.settingsResource, {}, extUriBiasedIgnorePathCase, fileService, logService));
 		this.configuration = new Configuration(
 			this.defaultConfiguration.configurationModel,

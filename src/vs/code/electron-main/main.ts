@@ -206,7 +206,7 @@ class CodeMain {
 		} else if (environmentMainService.policyFile) {
 			policyService = disposables.add(new FilePolicyService(environmentMainService.policyFile, fileService, logService));
 		} else {
-			policyService = new NullPolicyService();
+			policyService = disposables.add(new NullPolicyService());
 		}
 		services.set(IPolicyService, policyService);
 
