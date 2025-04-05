@@ -1,4 +1,4 @@
-# Visual Studio Code - Open Source ("Code - OSS")
+# Android.X.Visual Studio Code - Open Source ("Code - OSS")
 
 [![Feature Requests](https://img.shields.io/github/issues/microsoft/vscode/feature-request.svg)](https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
 [![Bugs](https://img.shields.io/github/issues/microsoft/vscode/bug.svg)](https://github.com/microsoft/vscode/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
@@ -74,6 +74,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## License
 
-Copyright (c) Microsoft Corporation. All rights reserved.
+Copyright (c) Android.developers.com . All rights reserved.
 
 Licensed under the [MIT](LICENSE.txt) license.
